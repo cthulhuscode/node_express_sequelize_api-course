@@ -1,13 +1,20 @@
 import faker from "faker";
-import { IProduct } from "../interfaces/IProduct";
 import boom from "@hapi/boom";
+import { IProduct } from "../interfaces/IProduct";
+import { pool } from "../libs";
+import { Pool } from "pg";
 
 export class ProductsService {
   private products: IProduct[] = [];
+  private pool: Pool;
 
   constructor() {
     this.products = [];
     this.generate();
+    this.pool = pool;
+    this.pool.on("error", (err) => {
+      throw boom.internal(err.message);
+    });
   }
 
   private generate() {
@@ -23,6 +30,10 @@ export class ProductsService {
   }
 
   async find(size?: number | undefined) {
+    const query = "SELECT * FROM tasks;";
+    const response = await this.pool.query(query);
+    console.log(response);
+
     let productsTemp = [...this.products];
 
     if (!productsTemp) throw boom.notFound("There are not any product yet");
