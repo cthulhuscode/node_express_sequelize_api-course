@@ -1,7 +1,7 @@
 import faker from "faker";
 import boom from "@hapi/boom";
 import { IProduct } from "../interfaces/IProduct";
-import { pool } from "../libs";
+import { pool, sequelize } from "../libs";
 import { Pool } from "pg";
 
 export class ProductsService {
@@ -31,7 +31,7 @@ export class ProductsService {
 
   async find(size?: number | undefined) {
     const query = "SELECT * FROM tasks;";
-    const response = await this.pool.query(query);
+    const response = await sequelize.query(query);
     console.log(response);
 
     let productsTemp = [...this.products];
