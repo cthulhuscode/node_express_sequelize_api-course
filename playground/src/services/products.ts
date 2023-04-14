@@ -3,6 +3,9 @@ import boom from "@hapi/boom";
 import { IProduct } from "../interfaces/IProduct";
 import { pool, sequelize } from "../libs";
 import { Pool } from "pg";
+import { Model } from "sequelize";
+
+const { models } = sequelize;
 
 export class ProductsService {
   private products: IProduct[] = [];
@@ -30,17 +33,13 @@ export class ProductsService {
   }
 
   async find(size?: number | undefined) {
-    const query = "SELECT * FROM tasks;";
-    const response = await sequelize.query(query);
-    console.log(response);
+    const response: any = await models.Product.findAll();
 
-    let productsTemp = [...this.products];
+    if (!response.length) throw boom.notFound("There are not any product yet");
 
-    if (!productsTemp) throw boom.notFound("There are not any product yet");
+    if (size && size >= 1 && size <= 100) return response.slice(0, size);
 
-    if (size && size <= 100) productsTemp = this.products.slice(0, size);
-
-    return productsTemp;
+    return response;
   }
 
   async findOne(id: string) {
