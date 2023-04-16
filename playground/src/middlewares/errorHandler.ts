@@ -28,7 +28,7 @@ export function errorHandler(
   } else {
     errorResponse = {
       status: 500,
-      message: "Error en el servidor",
+      message: "Server error :c",
     };
   }
 
