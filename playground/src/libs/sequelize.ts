@@ -8,11 +8,14 @@ const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${
 
 export const sequelize = new Sequelize(URI, {
   dialect: "postgres",
-  //  logging: console.log,
+  logging: false,
 });
 
 // Pass the connection
 setupModels(sequelize);
 
 // Take the models and create the structure
-sequelize.sync();
+sequelize
+  .sync()
+  .then((res) => console.log(`${res.config.database} connected`))
+  .catch((e) => console.log(e));
