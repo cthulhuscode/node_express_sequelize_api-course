@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const id = Joi.string().uuid();
+const id = Joi.number();
 const name = Joi.string().min(3).max(15).label("nombre").messages({
   "string.base": "'nombre' debe ser de tipo texto",
   "string.empty": "'nombre' no puede ser un campo vacío",

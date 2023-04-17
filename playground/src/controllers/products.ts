@@ -16,7 +16,7 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const getProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const product = await service.findOne(id);
+  const product = await service.findOne(+id);
   res.status(200).json({ product });
 };
 
