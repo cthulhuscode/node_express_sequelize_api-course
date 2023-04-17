@@ -3,9 +3,10 @@ import boom from "@hapi/boom";
 import { IProduct } from "../interfaces/IProduct";
 import { pool, sequelize } from "../libs";
 import { Pool } from "pg";
-import { Model } from "sequelize";
 
-const { models } = sequelize;
+const {
+  models: { Product },
+} = sequelize;
 
 export class ProductsService {
   private products: IProduct[] = [];
@@ -33,7 +34,7 @@ export class ProductsService {
   }
 
   async find(size?: number | undefined) {
-    const response: any = await models.Product.findAll();
+    const response: any = await Product.findAll();
 
     if (!response.length) throw boom.notFound("There are not any product yet");
 
@@ -42,8 +43,8 @@ export class ProductsService {
     return response;
   }
 
-  async findOne(id: string) {
-    const product = this.products.find((product) => product.id === id);
+  async findOne(id: number) {
+    const product = await Product.findByPk(id);
 
     if (!product) throw boom.notFound("The product wasn't found");
 
