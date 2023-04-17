@@ -1,34 +1,33 @@
 import { ICategory } from "../interfaces/ICategory";
 import faker from "faker";
 import boom from "@hapi/boom";
+import { sequelize } from "../libs";
+
+const {
+  models: { Category },
+} = sequelize;
 
 export class CategoriesService {
   private categories: ICategory[];
 
   constructor() {
     this.categories = [];
-    this.generate();
-  }
-
-  private generate() {
-    for (let i = 0; i < 100; i++) {
-      this.categories.push({
-        id: faker.datatype.uuid(),
-        name: faker.commerce.department(),
-      });
-    }
   }
 
   async find() {
-    return [...this.categories];
+    const response = await Category.findAll();
+
+    if (!response.length) throw boom.notFound("No categories were found.");
+
+    return response;
   }
 
-  async findOne(id: string) {
-    const category = this.categories.find((category) => category.id === id);
+  async findOne(id: number) {
+    const response = await Category.findByPk(id);
 
-    if (!category) throw boom.notFound("The category wasn't found");
+    if (!response) throw boom.notFound("Category not found.");
 
-    return category;
+    return response;
   }
 
   async create(category: Omit<ICategory, "id">) {

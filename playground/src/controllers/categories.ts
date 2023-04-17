@@ -9,9 +9,9 @@ export const getCategories = async (req: Request, res: Response) => {
   res.status(200).json({ categories });
 };
 
-export const getCategory = async (req: Request, res: Response) => {
+export const getCategory = async (req: Request  , res: Response) => {
   const { id } = req.params;
-  const category = await service.findOne(id);
+  const category = await service.findOne(+id);
   res.status(200).json({ category });
 };
 
