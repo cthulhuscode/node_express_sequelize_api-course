@@ -1,5 +1,6 @@
 import boom from "@hapi/boom";
 import { sequelize } from "../libs";
+import { IUser } from "../interfaces";
 const {
   models: { User },
 } = sequelize;
@@ -18,11 +19,35 @@ export class UsersService {
 
     const response = await User.findByPk(id);
 
-    if (!response) throw boom.notFound("The user doesn't exist.");
+    if (!response) throw boom.notFound("The user wasn't found.");
 
     return response;
   }
-  async create() {}
-  async update() {}
-  async delete() {}
+  async create(data: Partial<IUser>) {
+    const newUser = await User.create(data);
+
+    if (!newUser)
+      throw boom.internal("An error ocurred while creating the user");
+
+    return newUser;
+  }
+  async update(id: number, changes: Partial<IUser>) {
+    const user = await this.findOne(id);
+
+    const updatedUser = await user.update(changes);
+
+    if (!updatedUser)
+      throw boom.internal(
+        "An error ocurred while updating the user. Please try again later."
+      );
+
+    return updatedUser;
+  }
+  async delete(id: number) {
+    const user = await this.findOne(id);
+
+    await user.destroy();
+
+    return id;
+  }
 }

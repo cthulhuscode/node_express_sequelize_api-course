@@ -15,3 +15,20 @@ export const getUser = async (req: Request, res: Response) => {
   const user = await service.findOne(+id);
   res.status(200).json({ user });
 };
+
+export const createUser = async (req: Request, res: Response) => {
+  const user = await service.create(req.body);
+  res.status(201).json({ user });
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+  const user = await service.update(+req.params.id, req.body);
+  res.status(200).json({ user });
+};
+
+export const deleteUser = async (req: Request, res: Response) => {
+  const id = await service.delete(+req.params.id);
+  res
+    .status(200)
+    .json({ message: `The user ${id} was deleted successfully.` });
+};
