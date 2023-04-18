@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Boom } from "@hapi/boom";
+import { BaseError } from "sequelize";
 
 // export function logErrors(
 //   err: Error,
@@ -12,7 +13,7 @@ import { Boom } from "@hapi/boom";
 // }
 
 export function errorHandler(
-  err: Error | Boom | any,
+  err: Error | Boom | BaseError | any,
   req: Request,
   res: Response,
   next: NextFunction
@@ -25,7 +26,22 @@ export function errorHandler(
       status: +statusCode,
       message: payload.message,
     };
+  } else if (err instanceof BaseError) {
+    const _err: any = err;
+
+    if (_err.errors) {
+      errorResponse = {
+        status: 500,
+        message: _err.errors[0].message,
+      };
+    } else {
+      errorResponse = {
+        status: 500,
+        message: "Server error :c",
+      };
+    }
   } else {
+    console.log(err);
     errorResponse = {
       status: 500,
       message: "Server error :c",
