@@ -16,3 +16,11 @@ export const getProductSchema = Joi.object({
 export const deleteProductSchema = Joi.object({
   id: id.required(),
 });
+
+export const createCategorySchema = Joi.object({
+  name: name.required(),
+});
+
+export const updateCategorySchema = Joi.object({
+  name: name.required(),
+});
