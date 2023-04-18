@@ -9,7 +9,7 @@ const name = Joi.string().min(3).messages({
   "string.empty": "'name' can't be empty",
 });
 
-export const getProductSchema = Joi.object({
+export const getCategorySchema = Joi.object({
   id: id.required(),
 });
 
