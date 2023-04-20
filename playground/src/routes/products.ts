@@ -17,9 +17,7 @@ import {
 
 export const router = Router();
 
-router.get("/", getProducts);
 router.get("/:id", validatorHandler(getProductSchema, "params"), getProduct);
-router.post("/", validatorHandler(createProductSchema, "body"), addProduct);
 router.put(
   "/:id",
   validatorHandler(getProductSchema, "params"), // first validate the id
@@ -37,3 +35,6 @@ router.delete(
   validatorHandler(deleteProductSchema, "params"),
   deleteProduct
 );
+
+router.get("/", getProducts);
+router.post("/", validatorHandler(createProductSchema, "body"), addProduct);
