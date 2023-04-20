@@ -1,38 +1,12 @@
-import faker from "faker";
 import boom from "@hapi/boom";
 import { IProduct } from "../interfaces/IProduct";
-import { pool, sequelize } from "../libs";
-import { Pool } from "pg";
+import { sequelize } from "../libs";
 
 const {
   models: { Product },
 } = sequelize;
 
 export class ProductsService {
-  private products: IProduct[] = [];
-  private pool: Pool;
-
-  constructor() {
-    this.products = [];
-    this.generate();
-    this.pool = pool;
-    this.pool.on("error", (err) => {
-      throw boom.internal(err.message);
-    });
-  }
-
-  private generate() {
-    const limit = 100;
-    for (let i = 0; i < limit; i++) {
-      this.products.push({
-        id: faker.datatype.uuid(),
-        name: faker.commerce.productName(),
-        price: parseInt(faker.commerce.price(), 10),
-        image: faker.image.imageUrl(),
-      });
-    }
-  }
-
   async find(size?: number | undefined) {
     const response: any = await Product.findAll();
 
@@ -52,43 +26,34 @@ export class ProductsService {
   }
 
   async create(product: Omit<IProduct, "id">) {
-    const newProduct = {
-      id: faker.datatype.uuid(),
-      ...product,
-    };
+    const newProduct = await Product.create(product);
 
     if (!newProduct)
-      throw boom.badImplementation(
-        "There was an error while creating the new product"
-      ); // status code: 500
-
-    this.products.push(newProduct);
+      throw boom.internal(
+        "An error occurred while creating the product. Please try again later."
+      );
 
     return newProduct;
   }
 
-  async update(id: string, changes: Omit<IProduct, "id">) {
-    const productIndex = this.products.findIndex(
-      (product) => product.id === id
-    );
+  async update(id: number, changes: Omit<IProduct, "id">) {
+    const currentProduct = await this.findOne(id);
 
-    if (productIndex === -1) throw boom.notFound("The product wasn't found");
+    const updatedProduct = await currentProduct.update(changes);
 
-    const productTemp = this.products[productIndex];
+    if (!updatedProduct)
+      throw boom.internal(
+        "An error occurred while updating the product. Please try again later."
+      );
 
-    this.products[productIndex] = { ...productTemp, ...changes };
-
-    return this.products[productIndex];
+    return updatedProduct;
   }
 
-  async delete(id: string) {
-    const productIndex = this.products.findIndex(
-      (product) => product.id === id
-    );
-    if (productIndex === -1) throw boom.notFound("The product wasn't found");
+  async delete(id: number) {
+    const product = await this.findOne(id);
 
-    this.products.splice(productIndex, 1);
+    await product.destroy();
 
-    return true;
+    return id;
   }
 }

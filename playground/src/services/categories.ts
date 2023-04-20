@@ -1,5 +1,4 @@
 import { ICategory } from "../interfaces/ICategory";
-import faker from "faker";
 import boom from "@hapi/boom";
 import { sequelize } from "../libs";
 
@@ -8,12 +7,6 @@ const {
 } = sequelize;
 
 export class CategoriesService {
-  private categories: ICategory[];
-
-  constructor() {
-    this.categories = [];
-  }
-
   async find() {
     const response = await Category.findAll();
 
@@ -31,43 +24,34 @@ export class CategoriesService {
   }
 
   async create(category: Omit<ICategory, "id">) {
-    const newCategory = {
-      id: faker.datatype.uuid(),
-      ...category,
-    };
+    const newCategory = await Category.create(category);
 
-    if (!newCategory)
-      throw boom.badImplementation(
-        "There was an error while creating the new category"
-      ); // status code: 500
-
-    this.categories.push(newCategory);
+    if (!category)
+      throw boom.internal(
+        "An error ocurred while creating the category. Please try again later."
+      );
 
     return newCategory;
   }
 
-  async update(id: string, changes: Omit<ICategory, "id">) {
-    const categoryIndex = this.categories.findIndex(
-      (category) => category.id === id
-    );
+  async update(id: number, changes: Omit<ICategory, "id">) {
+    const currentCategory = await this.findOne(id);
 
-    if (categoryIndex === -1) throw boom.notFound("The category wasn't found");
+    const updatedCategory = await currentCategory.update(changes);
 
-    const categoryTemp = this.categories[categoryIndex];
-    this.categories[categoryIndex] = { ...categoryTemp, ...changes };
+    if (!updatedCategory)
+      throw boom.internal(
+        "An error ocurred while updating the category. Please try again later."
+      );
 
-    return this.categories[categoryIndex];
+    return updatedCategory;
   }
 
-  async delete(id: string) {
-    const categoryIndex = this.categories.findIndex(
-      (category) => category.id === id
-    );
+  async delete(id: number) {
+    const category = await this.findOne(id);
 
-    if (categoryIndex === -1) throw boom.notFound("The category wasn't found");
+    await category.destroy();
 
-    this.categories.splice(categoryIndex, 1);
-
-    return true;
+    return id;
   }
 }

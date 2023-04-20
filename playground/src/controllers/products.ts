@@ -29,7 +29,7 @@ export const putProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
   const product = req.body;
 
-  const updatedProduct = await service.update(id, product);
+  const updatedProduct = await service.update(+id, product);
 
   res.status(200).json({ updatedProduct, msg: `Product ${id} modified` });
 };
@@ -38,7 +38,7 @@ export const patchProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
   const product = req.body;
 
-  const updatedProduct = await service.update(id, product);
+  const updatedProduct = await service.update(+id, product);
 
   res.status(200).json({ updatedProduct, msg: `Product ${id} modified` });
 };
@@ -46,7 +46,7 @@ export const patchProduct = async (req: Request, res: Response) => {
 export const deleteProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const deleted = await service.delete(id);
+  const deleted = await service.delete(+id);
 
   if (deleted) res.status(200).json({ msg: `Product ${id} deleted` });
   else res.status(500).json({ msg: `Unable to delete product ${id}` });

@@ -9,7 +9,7 @@ export const getCategories = async (req: Request, res: Response) => {
   res.status(200).json({ categories });
 };
 
-export const getCategory = async (req: Request  , res: Response) => {
+export const getCategory = async (req: Request, res: Response) => {
   const { id } = req.params;
   const category = await service.findOne(+id);
   res.status(200).json({ category });
@@ -24,7 +24,7 @@ export const putCategory = async (req: Request, res: Response) => {
   const { id } = req.params;
   const category = req.body;
 
-  const updatedCategory = await service.update(id, category);
+  const updatedCategory = await service.update(+id, category);
 
   res.status(200).json({ updatedCategory, msg: `Category ${id} modified` });
 };
@@ -33,7 +33,7 @@ export const patchCategory = async (req: Request, res: Response) => {
   const { id } = req.params;
   const category = req.body;
 
-  const updatedCategory = await service.update(id, category);
+  const updatedCategory = await service.update(+id, category);
 
   res.status(200).json({ updatedCategory, msg: `Category ${id} modified` });
 };
@@ -41,7 +41,7 @@ export const patchCategory = async (req: Request, res: Response) => {
 export const deleteCategory = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const deleted = await service.delete(id);
+  const deleted = await service.delete(+id);
 
   if (deleted) res.status(200).json({ msg: `Category ${id} deleted` });
   else res.status(500).json({ msg: `Unable to delete category ${id}` });
