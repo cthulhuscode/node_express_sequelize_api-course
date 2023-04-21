@@ -27,11 +27,11 @@ Posteriormente, se crea un archivo de configuración `.sequelizerc` en la carpet
 `.sequelizerc:`
 
     module.exports = {
-      'config': './db/config.js',
-      'models-paths: './db/models',
-      'migrations-paths: './db/migrations',
-      'seeders-path': './db/seeders',
-    }
+        config: path.resolve(".", "dist", "src", "db", "config.js"),
+        "models-path": path.resolve(".", "dist", "src", "db", "models"),
+        "migrations-path": path.resolve(".", "dist", "src", "db", "migrations"),
+        "seeders-path": path.resolve(".", "dist", "src", "db", "seeders"),
+    };
 
 - `config` → Dónde se encuentra la configuración, esta configuración se encuentra la conexión hacia la BD. El cli tiene su propia conexión, independientemente de la conexión de la aplicación porque esas conexiones corren a nivel de terminal.
 
@@ -42,6 +42,12 @@ Posteriormente, se crea un archivo de configuración `.sequelizerc` en la carpet
 - `seeders-path` → Dónde se encuentran las semillas de información, sirve mucho para pruebas unitarias, end to end, donde se necesitan semillas de información que es como cargar varios datos de información a la BD.
 
 Se crean las carpetas `migrations`, `models`, `seeders` y el archivo `config.js` dentro de la carpeta `db`.
+
+---
+
+**En el código**
+
+Con `sequelize.sync()` no se puede alterar una tabla que ya está creada ya que únicamente lee el modelo, y en caso de hacer alguna modificación, se queda con la primera versión (no se puede agregar un atributo más). Con las migraciones es más flexible ya que sí se pueden hacer modificaciones y tener todo de una forma organizada.
 
 ---
 
