@@ -15,8 +15,7 @@ export const sequelize = new Sequelize(URI, {
 setupModels(sequelize);
 
 // Take the models and create the structure
-// sequelize
-//   .sync() // not recommended for production, is preferable to use a migration system
-//   .then((res) => console.log(`${res.config.database} connected`))
-//   .catch((e) => console.log(e));
-
+sequelize
+  .sync() // not recommended for production, is preferable to use a migration system
+  .then((res) => console.log(`${res.config.database} connected`))
+  .catch((e) => console.log(e));
