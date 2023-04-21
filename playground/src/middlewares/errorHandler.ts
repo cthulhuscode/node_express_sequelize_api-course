@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Boom } from "@hapi/boom";
-import { BaseError } from "sequelize";
+import { BaseError, ValidationError } from "sequelize";
 
 // export function logErrors(
 //   err: Error,
@@ -13,7 +13,7 @@ import { BaseError } from "sequelize";
 // }
 
 export function errorHandler(
-  err: Error | Boom | BaseError | any,
+  err: Error | Boom | BaseError | ValidationError | any,
   req: Request,
   res: Response,
   next: NextFunction
@@ -26,7 +26,7 @@ export function errorHandler(
       status: +statusCode,
       message: payload.message,
     };
-  } else if (err instanceof BaseError) {
+  } else if (err instanceof BaseError || err instanceof ValidationError) {
     const _err: any = err;
 
     if (_err.errors) {
