@@ -42,3 +42,15 @@ Posteriormente, se crea un archivo de configuración `.sequelizerc` en la carpet
 - `seeders-path` → Dónde se encuentran las semillas de información, sirve mucho para pruebas unitarias, end to end, donde se necesitan semillas de información que es como cargar varios datos de información a la BD.
 
 Se crean las carpetas `migrations`, `models`, `seeders` y el archivo `config.js` dentro de la carpeta `db`.
+
+---
+
+## Commands
+
+**Generate a new migration**
+
+    npm run migrations:generate <migration_name>
+
+**Run migrations**
+
+    npm run migrations:run
