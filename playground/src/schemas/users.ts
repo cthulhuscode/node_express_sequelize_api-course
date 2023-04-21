@@ -7,6 +7,7 @@ const id = Joi.number()
 const email = Joi.string().email().trim().message("Invalid email.");
 const password = Joi.string().min(4).trim();
 const createdAt = Joi.date().optional();
+const role = Joi.string().trim();
 
 export const getUserSchema = Joi.object({
   id,
@@ -19,10 +20,12 @@ export const deleteUserSchema = Joi.object({
 export const createUserSchema = Joi.object({
   email: email.required(),
   password: password.required(),
+  role: role.required(),
   createdAt: createdAt.optional(),
 });
 
 export const updateUserSchema = Joi.object({
-  email: email,
-  password: password,
+  email,
+  password,
+  role,
 });
