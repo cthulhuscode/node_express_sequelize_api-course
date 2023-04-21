@@ -10,7 +10,11 @@
     "dev": "nodemon app.ts",
     "start": "node ./dist/app.js --env=production",
     "prestart": "npm run build",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "migrations:generate": "sequelize-cli migration:generate --name",
+    "migrations:run": "sequelize-cli db:migrate",
+    "migrations:revert": "sequelize-cli db:migrate:undo",
+    "migrations:clear": "sequelize-cli db:migrate:undo:all"
   },
   "author": "Enrique Ruvalcaba",
   "devDependencies": {
