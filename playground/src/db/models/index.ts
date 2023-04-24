@@ -16,4 +16,5 @@ export function setupModels(sequelize: Sequelize) {
 
   // Set the table relationships
   Customer.associate(sequelize.models);
+  User.associate(sequelize.models);
 }
