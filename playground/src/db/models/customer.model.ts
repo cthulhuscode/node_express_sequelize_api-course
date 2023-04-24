@@ -33,6 +33,7 @@ export const CustomerSchema = {
     field: "user_id",
     allowNull: true,
     type: DataTypes.INTEGER,
+    unique: true,
     references: {
       model: USER_TABLE, // the other table
       key: "id", // the other table's id
@@ -46,6 +47,7 @@ export class Customer extends Model {
   static associate(models: Model[] | any) {
     this.belongsTo(models.User, {
       as: "user",
+      foreignKey: "userId",
     });
   }
 
