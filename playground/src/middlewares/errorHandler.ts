@@ -39,6 +39,7 @@ export function errorHandler(
         status: 500,
         message: "Server error :c",
       };
+      console.log(err);
     }
   } else {
     console.log(err);
