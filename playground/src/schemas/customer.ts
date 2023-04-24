@@ -6,7 +6,9 @@ const id = Joi.number()
   .messages({ "any.only": "Invalid id." });
 const name = Joi.string().min(2).trim();
 const lastName = Joi.string().min(2).trim();
-const phone = Joi.string().min(10);
+const phone = Joi.string()
+  .min(10)
+  .pattern(/^[0-9]+$/);
 const createdAt = Joi.date().optional();
 const userId = Joi.number().positive().messages({ "any.only": "Invalid id." });
 
