@@ -31,7 +31,7 @@ export function errorHandler(
 
     if (_err.errors) {
       errorResponse = {
-        status: 500,
+        status: 400,
         message: _err.errors[0].message,
       };
     } else {
