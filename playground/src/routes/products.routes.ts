@@ -6,14 +6,14 @@ import {
   putProduct,
   patchProduct,
   deleteProduct,
-} from "../controllers/products";
+} from "../controllers/products.controller";
 import { validatorHandler } from "../middlewares/validatorHandler";
 import {
   createProductSchema,
   updateProductSchema,
   getProductSchema,
   deleteProductSchema,
-} from "../schemas/products";
+} from "../schemas/products.schemas";
 
 export const router = Router();
 

@@ -5,14 +5,14 @@ import {
   getUser,
   getUsers,
   updateUser,
-} from "../controllers/users";
+} from "../controllers/users.controller";
 import { validatorHandler } from "../middlewares/validatorHandler";
 import {
   createUserSchema,
   deleteUserSchema,
   getUserSchema,
   updateUserSchema,
-} from "../schemas/users";
+} from "../schemas/users.schemas";
 
 export const router = Router();
 

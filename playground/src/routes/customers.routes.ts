@@ -5,14 +5,14 @@ import {
   getCustomer,
   getCustomers,
   updateCustomer,
-} from "../controllers/customers";
+} from "../controllers/customers.controller";
 import { validatorHandler } from "../middlewares/validatorHandler";
 import {
   createCustomerSchema,
   deleteCustomerSchema,
   getCustomerSchema,
   updateCustomerSchema,
-} from "../schemas/customer";
+} from "../schemas/customer.schemas";
 
 export const router = Router();
 

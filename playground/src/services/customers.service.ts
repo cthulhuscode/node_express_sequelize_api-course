@@ -7,7 +7,9 @@ const {
 
 export class CustomersService {
   async find() {
-    const response = await Customer.findAll();
+    const response = await Customer.findAll({
+      include: ["user"],
+    });
 
     if (!response.length)
       throw boom.notFound("There are not any customer yet.");

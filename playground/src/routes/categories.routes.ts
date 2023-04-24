@@ -6,12 +6,12 @@ import {
   patchCategory,
   deleteCategory,
   getCategory,
-} from "../controllers/categories";
+} from "../controllers/categories.controller";
 import {
   createCategorySchema,
   getCategorySchema,
   updateCategorySchema,
-} from "../schemas/categories";
+} from "../schemas/categories.schemas";
 import { validatorHandler } from "../middlewares/validatorHandler";
 
 export const router = Router();
