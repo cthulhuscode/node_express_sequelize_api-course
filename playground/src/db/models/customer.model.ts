@@ -31,14 +31,14 @@ export const CustomerSchema = {
   },
   userId: {
     field: "user_id",
-    allowNull: true,
+    allowNull: false,
     type: DataTypes.INTEGER,
     unique: true,
     references: {
       model: USER_TABLE, // the other table
       key: "id", // the other table's id
       onUpdate: "CASCADE",
-      onDelete: "SET NULL",
+      onDelete: "CASCADE",
     },
   },
 };
