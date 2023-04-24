@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { createUserSchema } from "./users.schemas";
 
 const id = Joi.number()
   .positive()
@@ -25,7 +26,7 @@ export const createCustomerSchema = Joi.object({
   lastName: lastName.required(),
   phone: phone.required(),
   createdAt: createdAt,
-  userId: userId.required(),
+  user: createUserSchema,
 });
 
 export const updateCustomerSchema = Joi.object({

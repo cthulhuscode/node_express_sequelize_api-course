@@ -1,14 +1,20 @@
 import boom from "@hapi/boom";
 import { sequelize } from "../libs";
-import { ICustomer } from "../interfaces";
+import { ICustomer, IUser } from "../interfaces";
 const {
-  models: { Customer },
+  models: { Customer, User },
 } = sequelize;
 
 export class CustomersService {
   async find() {
     const response = await Customer.findAll({
-      include: ["user"],
+      include: [
+        {
+          model: User,
+          as: "user",
+          attributes: ["id", "email", "role", "createdAt"],
+        },
+      ],
     });
 
     if (!response.length)
@@ -26,8 +32,16 @@ export class CustomersService {
 
     return response;
   }
-  async create(data: Partial<ICustomer>) {
-    const newCustomer = await Customer.create(data);
+  async create(data: Partial<ICustomer> | any) {
+    /**
+     * Thanks to the associations is possible to create
+     * new rows even for associated tables. For example,
+     * create a new user for a new client.
+     * This endpoint creates a new customer and a new user.
+     */
+    const newCustomer: any = await Customer.create(data, {
+      include: ["user"],
+    });
 
     if (!newCustomer)
       throw boom.internal("An error ocurred while creating the customer");

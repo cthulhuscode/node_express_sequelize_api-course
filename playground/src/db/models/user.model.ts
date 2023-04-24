@@ -45,6 +45,11 @@ export class User extends Model {
       tableName: USER_TABLE,
       modelName: "User",
       timestamps: false,
+      scopes: {
+        withoutPassword: {
+          attributes: { exclude: ["password"] },
+        },
+      },
     };
   }
 }
