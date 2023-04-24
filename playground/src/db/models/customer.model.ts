@@ -1,4 +1,5 @@
 import { Model, DataTypes, Sequelize, NOW } from "sequelize";
+import { USER_TABLE } from "./user.model";
 
 export const CUSTOMERS_TABLE = "customers";
 
@@ -28,10 +29,25 @@ export const CustomerSchema = {
     field: "created_at",
     defaultValue: NOW,
   },
+  userId: {
+    field: "user_id",
+    allowNull: true,
+    type: DataTypes.INTEGER,
+    references: {
+      model: USER_TABLE, // the other table
+      key: "id", // the other table's id
+      onUpdate: "CASCADE",
+      onDelete: "SET NULL",
+    },
+  },
 };
 
 export class Customer extends Model {
-  static associate() {}
+  static associate(models: Model[] | any) {
+    this.belongsTo(models.User, {
+      as: "user",
+    });
+  }
 
   static config(sequelize: Sequelize) {
     return {

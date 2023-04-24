@@ -8,6 +8,7 @@ const name = Joi.string().min(2).trim();
 const lastName = Joi.string().min(2).trim();
 const phone = Joi.string().min(10);
 const createdAt = Joi.date().optional();
+const userId = Joi.number().positive().messages({ "any.only": "Invalid id." });
 
 export const getCustomerSchema = Joi.object({
   id,
@@ -22,6 +23,7 @@ export const createCustomerSchema = Joi.object({
   lastName: lastName.required(),
   phone: phone.required(),
   createdAt: createdAt,
+  userId: userId.required(),
 });
 
 export const updateCustomerSchema = Joi.object({
@@ -29,4 +31,5 @@ export const updateCustomerSchema = Joi.object({
   lastName,
   phone,
   createdAt,
+  userId,
 });

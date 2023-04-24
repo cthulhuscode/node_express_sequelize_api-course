@@ -8,8 +8,12 @@ import { Customer, CustomerSchema } from "./customer.model";
  * The models are gonna be initiated in this function
  */
 export function setupModels(sequelize: Sequelize) {
+  // Initialize models
   User.init(UserSchema, User.config(sequelize));
   Product.init(ProductsSchema, Product.config(sequelize));
   Category.init(CategoriesSchema, Category.config(sequelize));
   Customer.init(CustomerSchema, Customer.config(sequelize));
+
+  // Set the table relationships
+  Customer.associate(sequelize.models);
 }
