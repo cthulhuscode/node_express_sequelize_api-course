@@ -7,7 +7,9 @@ const {
 
 export class UsersService {
   async find() {
-    const response = await User.findAll();
+    const response = await User.scope("withoutPassword").findAll({
+      include: "customer",
+    });
 
     if (!response.length) throw boom.notFound("There are not any user yet.");
 
@@ -17,7 +19,9 @@ export class UsersService {
   async findOne(id: number) {
     if (!id) throw boom.badRequest("Invalid id.");
 
-    const response = await User.findByPk(id);
+    const response = await User.scope("withoutPassword").findByPk(id, {
+      include: "customer",
+    });
 
     if (!response) throw boom.notFound("The user wasn't found.");
 
