@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { IUser } from "../interfaces";
 import { UsersService } from "../services";
 
 const service = new UsersService();

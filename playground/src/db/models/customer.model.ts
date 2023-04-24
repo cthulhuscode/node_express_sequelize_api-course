@@ -36,7 +36,7 @@ export class Customer extends Model {
   static config(sequelize: Sequelize) {
     return {
       sequelize,
-      tableName: "Customer",
+      tableName: "customers",
       timestamps: false,
     };
   }
