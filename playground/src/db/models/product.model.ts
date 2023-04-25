@@ -3,7 +3,7 @@ import { CATEGORIES_TABLE } from "./category.model";
 
 export const PRODUCTS_TABLE = "products";
 
-export const ProductsSchema = {
+export const ProductSchema = {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,

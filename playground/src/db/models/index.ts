@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 import { User, UserSchema } from "./user.model";
-import { Product, ProductsSchema } from "./product.model";
+import { Product, ProductSchema } from "./product.model";
 import { CategoriesSchema, Category } from "./category.model";
 import { Customer, CustomerSchema } from "./customer.model";
 
@@ -10,7 +10,7 @@ import { Customer, CustomerSchema } from "./customer.model";
 export function setupModels(sequelize: Sequelize) {
   // Initialize models
   User.init(UserSchema, User.config(sequelize));
-  Product.init(ProductsSchema, Product.config(sequelize));
+  Product.init(ProductSchema, Product.config(sequelize));
   Category.init(CategoriesSchema, Category.config(sequelize));
   Customer.init(CustomerSchema, Customer.config(sequelize));
 
