@@ -8,7 +8,7 @@ export default {
   async up(queryInterface: any, Sequelize: any) {
     await queryInterface.addColumn(
       PRODUCTS_TABLE,
-      "categoryId",
+      "category_id",
       ProductSchema.categoryId
     );
     await queryInterface.addColumn(
@@ -24,7 +24,7 @@ export default {
   },
 
   async down(queryInterface: any, Sequelize: any) {
-    await queryInterface.removeColumn(PRODUCTS_TABLE, "categoryId");
+    await queryInterface.removeColumn(PRODUCTS_TABLE, "category_id");
     await queryInterface.removeColumn(PRODUCTS_TABLE, "description");
     await queryInterface.removeColumn(CATEGORIES_TABLE, "image");
   },
