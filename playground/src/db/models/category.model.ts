@@ -13,6 +13,11 @@ export const CategoriesSchema = {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  image: {
+    type: DataTypes.STRING,
+    unique: true,
+    allowNull: false,
+  },
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,
@@ -23,7 +28,9 @@ export const CategoriesSchema = {
 
 export class Category extends Model {
   // models
-  static associate() {}
+  static associate(models: Model[] | any) {
+    this.hasMany(models.Product, { as: "products", foreignKey: "categoryId" });
+  }
 
   static config(sequelize: Sequelize) {
     return {
