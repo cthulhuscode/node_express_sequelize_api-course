@@ -1,5 +1,7 @@
 # Associations
 
+## 1-1 relationship
+
 `HasOne → B`. Si queremos que B cargue con la relación.
 
 `BelongsTo → A`. Si queremos que A cargue con la relación.
@@ -45,3 +47,17 @@ Debido a que es una relación uno a uno, usualmente hay formas en que se trabaja
 Al crear la tabla _customers_ se debe generar una migración, modificar el boilerplate generado y correr la migración para crear la nueva estructura.
 
 Con la nueva asociación creada, se procede a modificar el esquema y el service tomando en cuenta los datos de la FK que se relaciona.
+
+## 1-N relationship
+
+_In this project, a category can have many products, but a product can only have one category._
+
+### `hasMany()`
+
+We'll use `hasMany()` in the _categories_ model , i.e. _products_ will have a _categoryId_ field.
+
+And in the _products_ model we'll use `belongsTo()` to complete the relationship.
+
+En este caso, cuando se utiliza `hasMany`, la relación queda en productos. La relación va en la entidad débil (productos).
+
+De la misma manera que se hizo en la relación uno a uno, se hacen las asociaciones correspondientes en los modelos, se genera la migración, se configura el `init` y se corre la migración.
