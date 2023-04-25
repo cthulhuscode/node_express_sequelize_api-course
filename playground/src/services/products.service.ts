@@ -8,7 +8,7 @@ const {
 
 export class ProductsService {
   async find(size?: number | undefined) {
-    const response: any = await Product.findAll();
+    const response: any = await Product.findAll({ include: ["category"] });
 
     if (!response.length) throw boom.notFound("There are not any product yet");
 
@@ -18,7 +18,7 @@ export class ProductsService {
   }
 
   async findOne(id: number) {
-    const product = await Product.findByPk(id);
+    const product = await Product.findByPk(id, { include: ["category"] });
 
     if (!product) throw boom.notFound("The product wasn't found");
 

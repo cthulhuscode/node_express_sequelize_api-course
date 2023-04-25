@@ -16,7 +16,7 @@ export class CategoriesService {
   }
 
   async findOne(id: number) {
-    const response = await Category.findByPk(id);
+    const response = await Category.findByPk(id, { include: ["products"] });
 
     if (!response) throw boom.notFound("Category not found.");
 
