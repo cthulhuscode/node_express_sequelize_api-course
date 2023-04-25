@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { Boom } from "@hapi/boom";
-import { BaseError, ValidationError } from "sequelize";
+import {
+  BaseError,
+  ValidationError,
+  ForeignKeyConstraintError,
+} from "sequelize";
 
 // export function logErrors(
 //   err: Error,
@@ -13,7 +17,13 @@ import { BaseError, ValidationError } from "sequelize";
 // }
 
 export function errorHandler(
-  err: Error | Boom | BaseError | ValidationError | any,
+  err:
+    | Error
+    | Boom
+    | BaseError
+    | ValidationError
+    | ForeignKeyConstraintError
+    | any,
   req: Request,
   res: Response,
   next: NextFunction
@@ -26,13 +36,22 @@ export function errorHandler(
       status: +statusCode,
       message: payload.message,
     };
-  } else if (err instanceof BaseError || err instanceof ValidationError) {
+  } else if (
+    err instanceof BaseError ||
+    err instanceof ValidationError ||
+    err instanceof ForeignKeyConstraintError
+  ) {
     const _err: any = err;
 
     if (_err.errors) {
       errorResponse = {
         status: 400,
         message: _err.errors[0].message,
+      };
+    } else if (_err.parent.detail) {
+      errorResponse = {
+        status: 400,
+        message: _err.parent.detail,
       };
     } else {
       errorResponse = {
