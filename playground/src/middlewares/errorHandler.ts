@@ -48,7 +48,7 @@ export function errorHandler(
         status: 400,
         message: _err.errors[0].message,
       };
-    } else if (_err.parent.detail) {
+    } else if (_err?.parent?.detail) {
       errorResponse = {
         status: 400,
         message: _err.parent.detail,
