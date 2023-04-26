@@ -10,7 +10,7 @@ export class ProductsService {
   async find(size?: number | undefined) {
     const response: any = await Product.findAll({ include: ["category"] });
 
-    if (!response.length) throw boom.notFound("There are not any product yet");
+    if (!response.length) throw boom.notFound("There is not any product yet");
 
     if (size && size >= 1 && size <= 100) return response.slice(0, size);
 
