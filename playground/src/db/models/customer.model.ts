@@ -45,9 +45,16 @@ export const CustomerSchema = {
 
 export class Customer extends Model {
   static associate(models: Model[] | any) {
+    // Users relationship 1-1
     this.belongsTo(models.User, {
       as: "user",
       foreignKey: "userId",
+    });
+
+    // Orders relationship 1-N
+    this.hasMany(models.Order, {
+      as: "orders",
+      foreignKey: "customerId",
     });
   }
 
