@@ -61,3 +61,36 @@ And in the _products_ model we'll use `belongsTo()` to complete the relationship
 En este caso, cuando se utiliza `hasMany`, la relación queda en productos. La relación va en la entidad débil (productos).
 
 De la misma manera que se hizo en la relación uno a uno, se hacen las asociaciones correspondientes en los modelos, se genera la migración, se configura el `init` y se corre la migración.
+
+## N-N relationship
+
+We'll use `belongsToMany()` for the relationship between _Products_ and _Orders_. _A product can have many orders and an order can have many products._
+
+This type of relationship needs a _join table_, i.e. an intermediate table between _Products_ and _Orders_. We'll call this table _products-orders_.
+
+Un producto puede pertenecer a muchas ordenes de compra, y una orden de compra puede tener muchos productos.
+
+Cuando se tiene una relación muchos a muchos, por detrás se tiene una tabla ternaria. En BD se usa una join table, una clase intermedia que conecta dos tablas con relación muchos a muchos.
+
+Para este caso se va requerir la tabla orders (ordenes de compra), esta estará ligada a un cliente. La join table serian los items que estarán ligados a una orden y producto.
+
+La tabla order tiene que ser una relación uno a muchos ya que un cliente puede tener muchas ordenes y una orden un cliente.
+
+Las relaciones muchos a muchos se solucionan con la tabla ternaria, en este caso se crea la tabla _orders-products_.
+
+Si se desea que _Order_ resuelva los items (productos enlazados a esa orden) a través de _OrderProduct_, se puede hacer la relación en el modelo de _Order_. Esto se hace de la siguiente forma en `order.model.js`:
+
+    static associate(models) {
+      this.belongsTo(models.Customer, {
+        as: 'customer',
+      });
+
+      this.belongsToMany(models.Product, {
+        as: 'items',
+        through: models.OrderProduct,
+        foreignKey: 'orderId',
+        otherKey: 'productId',
+      });
+    }
+
+Se hace el uso de `belongsToMany()` para decirle cuál es ese item que va a tener muchos productos. Como es una relación muchos a muchos se debe especificar cuál es la tabla ternaria, es decir, qué tabla va a resolver esa relación y se hace a través de la propiedad `through` especificando las llaves foráneas de ambas tablas usando las propiedades `foreignKey` y `otherKey`.
