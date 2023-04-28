@@ -16,12 +16,14 @@ import {
   addItemSchema,
 } from "../schemas/orders.schemas";
 import { validatorHandler } from "../middlewares/validatorHandler";
+import { queryProductSchema } from "../schemas/products.schemas";
 
 export const router = Router();
 
 router.post(
   "/:id/products",
   validatorHandler(addItemSchema, "body"),
+
   addProduct
 );
 router.get("/:id", validatorHandler(getOrderSchema, "params"), getOrder);
@@ -34,4 +36,4 @@ router.delete(
 );
 
 router.post("/", validatorHandler(createOrderSchema, "body"), addOrder);
-router.get("/", getOrders);
+router.get("/", validatorHandler(queryProductSchema, "query"), getOrders);

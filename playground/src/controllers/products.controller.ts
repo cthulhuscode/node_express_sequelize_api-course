@@ -1,15 +1,12 @@
 import { Request, Response } from "express";
-import { IProduct } from "../interfaces";
 import { ProductsService } from "../services/products.service";
 
 const service = new ProductsService();
 
 export const getProducts = async (req: Request, res: Response) => {
-  const { size } = req.query;
-  let products: IProduct[] = [];
+  const { limit, offset } = req.query;
 
-  if (size) products = await service.find(+size);
-  else products = await service.find();
+  const products = await service.find(req.query);
 
   res.status(200).json({ products });
 };
