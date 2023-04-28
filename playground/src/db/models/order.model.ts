@@ -27,6 +27,20 @@ export const OrderSchema = {
     field: "created_at",
     defaultValue: NOW,
   },
+  totalPrice: {
+    type: DataTypes.VIRTUAL,
+    get(): number {
+      const object = this as any;
+      if ((object?.items?.length as any) > 0) {
+        return object.items.reduce(
+          (total: number, item: any) =>
+            total + item.price * item.OrderProduct.amount,
+          0
+        );
+      }
+      return 0;
+    },
+  },
 };
 
 export class Order extends Model {
