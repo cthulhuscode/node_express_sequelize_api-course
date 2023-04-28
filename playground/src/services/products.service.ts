@@ -1,18 +1,53 @@
 import boom from "@hapi/boom";
 import { IProduct } from "../interfaces/IProduct";
 import { sequelize } from "../libs";
+import { Op } from "sequelize";
 
 const {
   models: { Product },
 } = sequelize;
 
+interface IQueryParams {
+  limit?: number | null;
+  offset?: number | null;
+  price?: number | null;
+  min_price?: number | null;
+  max_price?: number | null;
+}
+
 export class ProductsService {
-  async find(size?: number | undefined) {
-    const response: any = await Product.findAll({ include: ["category"] });
+  async find(queryParams: IQueryParams) {
+    const { limit, offset, price, min_price, max_price } = queryParams;
+    const options: any = {
+      include: ["category"],
+      where: {},
+    };
+
+    if (limit && offset) {
+      options.limit = limit;
+      options.offset = offset;
+    }
+
+    // Price filtering
+    if (min_price && max_price) {
+      options.where.price = {
+        [Op.between]: [min_price, max_price],
+      };
+    } else if (min_price) {
+      options.where.price = {
+        [Op.gte]: min_price,
+      };
+    } else if (max_price) {
+      options.where.price = {
+        [Op.lte]: max_price,
+      };
+    } else if (price) {
+      options.where.price = price;
+    }
+
+    const response: any = await Product.findAll(options);
 
     if (!response.length) throw boom.notFound("There is not any product yet");
-
-    if (size && size >= 1 && size <= 100) return response.slice(0, size);
 
     return response;
   }
