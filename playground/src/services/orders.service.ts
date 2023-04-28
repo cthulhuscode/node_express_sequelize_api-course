@@ -2,9 +2,10 @@ import boom from "@hapi/boom";
 import { sequelize } from "../libs";
 import { IOrder } from "../interfaces/IOrder";
 import { User } from "../db";
+import { IOrderProduct } from "../interfaces";
 
 const {
-  models: { Order },
+  models: { Order, OrderProduct },
 } = sequelize;
 
 export class OrdersService {
@@ -46,6 +47,7 @@ export class OrdersService {
             },
           ],
         },
+        "items",
       ],
     });
 
@@ -63,6 +65,37 @@ export class OrdersService {
       );
 
     return newOrder;
+  }
+
+  async addItem(data: Partial<IOrderProduct>) {
+    const { orderId, productId, amount } = data;
+
+    const productExistsInOrder: any = await OrderProduct.findOne({
+      where: { order_id: orderId, product_id: productId },
+    });
+
+    if (productExistsInOrder) {
+      const newAmount = productExistsInOrder.amount + amount;
+      const updatedItem = await productExistsInOrder.update({
+        amount: newAmount,
+      });
+
+      if (!updatedItem)
+        throw boom.internal(
+          "An error occurred while adding items to the order. Please try again later."
+        );
+
+      return updatedItem;
+    } else {
+      const newItem = await OrderProduct.create(data);
+
+      if (!newItem)
+        throw boom.internal(
+          "An error occurred while adding items to the order. Please try again later."
+        );
+
+      return newItem;
+    }
   }
 
   async update(id: number, changes: Omit<IOrder, "id">) {

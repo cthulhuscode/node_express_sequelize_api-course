@@ -25,6 +25,12 @@ export const addOrder = async (req: Request, res: Response) => {
   res.status(201).json({ order: newOrder, msg: "Order created" });
 };
 
+export const addProduct = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const newOrder = await service.addItem({ ...req.body, orderId: id });
+  res.status(201).json({ order: newOrder, msg: "Item added to the order" });
+};
+
 export const putOrder = async (req: Request, res: Response) => {
   const { id } = req.params;
   const order = req.body;

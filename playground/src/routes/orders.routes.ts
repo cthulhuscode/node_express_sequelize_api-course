@@ -6,17 +6,24 @@ import {
   putOrder,
   patchOrder,
   deleteOrder,
+  addProduct,
 } from "../controllers/orders.controller";
 import {
   createOrderSchema,
   getOrderSchema,
   updateOrderSchema,
   deleteOrderSchema,
+  addItemSchema,
 } from "../schemas/orders.schemas";
 import { validatorHandler } from "../middlewares/validatorHandler";
 
 export const router = Router();
 
+router.post(
+  "/:id/products",
+  validatorHandler(addItemSchema, "body"),
+  addProduct
+);
 router.get("/:id", validatorHandler(getOrderSchema, "params"), getOrder);
 router.put("/:id", validatorHandler(updateOrderSchema, "body"), putOrder);
 router.patch("/:id", validatorHandler(updateOrderSchema, "body"), patchOrder);
