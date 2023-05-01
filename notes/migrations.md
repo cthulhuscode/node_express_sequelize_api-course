@@ -60,3 +60,9 @@ Con `sequelize.sync()` no se puede alterar una tabla que ya está creada ya que 
 **Run migrations**
 
     npm run migrations:run
+
+## En producción
+
+Las migraciones son muy delicadas, es por ello que se deben tener en cuenta los esquemas. A nivel producción no se recomienda crear migraciones paso a paso, más bien, crear una sola migración que ya tenga todas las relaciones y configuración por defecto.
+
+Algo que suele realizarse es crear un nuevo esquema dentro de la migración y no basarse en el modelo. De esa manera cualquier cambio en el modelo no afectará a la migración.
