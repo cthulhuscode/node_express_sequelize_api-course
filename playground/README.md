@@ -1,9 +1,8 @@
-# Typescript API REST
+# Node.js API REST with Express and Sequelize (MySQL & PostgreSQL) course
 
-This API was built during the course Backend with Node.js - API REST with Express.js from Platzi.
+This course allowed me to learn about:
 
-## Using the API
-
-[See the API documentation](https://documenter.getpostman.com/view/10111528/2s8YsxvBRh)
-
-Change `{{PROD_URL}}` with https://ts-api-platzi-backend-course.up.railway.app/
+- Database associations in Sequelize
+- Migrations
+- Filtering data through request params
+- Data pagination
