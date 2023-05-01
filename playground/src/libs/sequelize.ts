@@ -2,14 +2,24 @@ import { Sequelize } from "sequelize";
 import { config } from "../config";
 import { setupModels } from "../db";
 
-const USER = encodeURIComponent(config.dbUser!);
-const PASSWORD = encodeURIComponent(config.dbPassword!);
-const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
+// const USER = encodeURIComponent(config.dbUser!);
+// const PASSWORD = encodeURIComponent(config.dbPassword!);
+// const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
 
-export const sequelize = new Sequelize(URI, {
+const options: any = {
   dialect: "postgres",
   logging: false,
-});
+};
+
+if (config.isProd) {
+  options.dialectOptions = {
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  };
+}
+
+export const sequelize = new Sequelize(config.dbUrl!, options);
 
 // Pass the connection
 setupModels(sequelize);
